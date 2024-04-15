@@ -7,5 +7,6 @@
         "**/.git": true,
         "**/.DS_Store": true,
         "**/__pycache__": true
-    }
+    },
+    "python.analysis.typeCheckingMode": "strict"
 }

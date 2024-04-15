@@ -1,18 +1,28 @@
-print("PY")
+from other.paradigms import (
+    ParadigmMulti,
+    ParadigmOop,
+    ParadigmProcedural,
+    ParadigmImperative,
+    ParadigmFunctional,
+    ParadigmStructured,
+    ParadigmReflective,
+)
+from schema import ProgrammingLanguage
 
-logo = "/logos/p/python/python-logo-generic.svg"
 
-name = "Python"
-
-paradigms = [
-    "multi",
-    "oop",
-    "procedural",
-    "imperative",
-    "functional",
-    "structured",
-    "reflective",
-]
+LangPython = ProgrammingLanguage(
+    name="Python",
+    logo="/logos/p/python/python-logo-generic.svg",
+    paradigms=[
+        ParadigmMulti,
+        ParadigmOop,
+        ParadigmProcedural,
+        ParadigmImperative,
+        ParadigmFunctional,
+        ParadigmStructured,
+        ParadigmReflective,
+    ],
+)
 
 # releases = []
 # designer = "people/v/van-rossum-guido"

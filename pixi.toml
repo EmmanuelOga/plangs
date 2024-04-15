@@ -13,3 +13,4 @@ python = ">=3.12.2,<3.13"
 
 [pypi-dependencies]
 kuzu = "*"
+pydantic = "*"
