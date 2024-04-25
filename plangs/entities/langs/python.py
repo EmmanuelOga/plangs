@@ -1,28 +1,34 @@
-from other.paradigms import (
-    ParadigmMulti,
-    ParadigmOop,
-    ParadigmProcedural,
-    ParadigmImperative,
-    ParadigmFunctional,
-    ParadigmStructured,
-    ParadigmReflective,
-)
-from schema import ProgrammingLanguage
+from plangs.decorators import creates_entities, creates_relationships
+from plangs.entities import IdLang, IdParadigm
+from plangs.schema import ProgrammingLanguage
 
 
-LangPython = ProgrammingLanguage(
-    name="Python",
-    logo="/logos/p/python/python-logo-generic.svg",
-    paradigms=[
-        ParadigmMulti,
-        ParadigmOop,
-        ParadigmProcedural,
-        ParadigmImperative,
-        ParadigmFunctional,
-        ParadigmStructured,
-        ParadigmReflective,
-    ],
-)
+@creates_entities
+def create():
+    id = IdLang.PYTHON
+    lang = ProgrammingLanguage(
+        id=id.value,
+        name="Python",
+        logo="/logos/p/python/python-logo-generic.svg",
+    )
+    id.set(lang)
+
+
+@creates_relationships
+def relate():
+    lang = IdLang.PYTHON.get()
+    lang.paradigms.extend(
+        [
+            IdParadigm.MULTI.get(),
+            IdParadigm.OOP.get(),
+            IdParadigm.PROCEDURAL.get(),
+            IdParadigm.IMPERATIVE.get(),
+            IdParadigm.FUNCTIONAL.get(),
+            IdParadigm.STRUCTURED.get(),
+            IdParadigm.REFLECTIVE.get(),
+        ]
+    )
+
 
 # releases = []
 # designer = "people/v/van-rossum-guido"
