@@ -5,7 +5,7 @@ from glob import iglob
 
 import kuzu
 
-from plangs.decorators import invoke_entity_creators, invoke_relationship_creators
+from plangs.entities.decorators import invoke_entity_creators, invoke_relationship_creators
 from plangs.entities import IdLang
 
 ROOT_DIR: str = os.path.abspath(

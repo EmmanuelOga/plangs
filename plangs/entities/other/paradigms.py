@@ -1,4 +1,4 @@
-from plangs.decorators import creates_entities
+from plangs.entities.decorators import creates_entities
 from plangs.entities import IdParadigm
 from plangs.schema import Paradigm
 

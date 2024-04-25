@@ -1,4 +1,4 @@
-from plangs.decorators import creates_entities, creates_relationships
+from plangs.entities.decorators import creates_entities, creates_relationships
 from plangs.entities import IdLang, IdParadigm
 from plangs.schema import ProgrammingLanguage
 

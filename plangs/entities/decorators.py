@@ -14,13 +14,13 @@ def creates_relationships(func: Callable[[], None]) -> Callable[[], None]:
 
 
 def invoke_entity_creators():
-    """Invoke all functions that define entities and relationships."""
+    """Invoke all functions that define entities."""
     for creator in ENTITY_CREATORS:
         creator()
 
 
 def invoke_relationship_creators():
-    """Invoke all functions that define entities and relationships."""
+    """Invoke all functions that define relationships."""
     for creator in RELATIONSHIP_CREATORS:
         creator()
 
