@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Launch a new bash shell with the complete dev env setup.
+# While `pixi shell` can spawn a shell with some of the config,
+# it won't necessarily know about custom configuration needed by the app
+# or by tools installed by us using a custom configuration, like go.
+
 # Define the bash configuration into a variable.
 ## read details:
 ### -r: raw mode, it doesn't allow backslashes to escape any characters.
