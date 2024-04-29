@@ -1,13 +1,10 @@
-from plangs.entities.decorators import creates_entities
 from plangs.entities import IdParadigm
 from plangs.schema import Paradigm
 
 
-@creates_entities
 def create():
     def create_paradigm(id: IdParadigm, name: str):
-        p = Paradigm(id=id.value, name=name)
-        id.set(p)
+        id.set(Paradigm(id=id.value, name=name))
 
     create_paradigm(IdParadigm.MULTI, "Multi-Paradigm")
     create_paradigm(IdParadigm.OOP, "Object-Oriented")

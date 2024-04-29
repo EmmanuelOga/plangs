@@ -10,7 +10,9 @@ platforms = ["osx-arm64"]
 
 [dependencies]
 python = ">=3.12.2,<3.13"
+ipython = ">=8.22.2,<8.23"
+go = ">=1.22.2,<1.23"
 
 [pypi-dependencies]
 kuzu = "*"
-pydantic = "*"
+msgspec = "*"

@@ -1,43 +1,45 @@
-from plangs.entities.decorators import creates_entities, creates_relationships
-from plangs.entities import IdLang, IdParadigm
-from plangs.schema import ProgrammingLanguage
+from plangs.entities import ALL_LOGOS, IdLang, IdParadigm
+from plangs.schema import Logo, ProgrammingLanguage
 
 
-@creates_entities
 def create():
-    id = IdLang.PYTHON
-    lang = ProgrammingLanguage(
-        id=id.value,
-        name="Python",
-        logo="/logos/p/python/python-logo-generic.svg",
+    lang_id = IdLang.PYTHON
+    lang = lang_id.get()
+
+    lang.paradigm_ids.extend(
+        map(
+            lambda p: p.value,
+            [
+                IdParadigm.MULTI,
+                IdParadigm.OOP,
+                IdParadigm.PROCEDURAL,
+                IdParadigm.IMPERATIVE,
+                IdParadigm.FUNCTIONAL,
+                IdParadigm.STRUCTURED,
+                IdParadigm.REFLECTIVE,
+            ],
+        )
     )
-    id.set(lang)
 
-
-@creates_relationships
-def relate():
-    lang = IdLang.PYTHON.get()
-    lang.paradigms.extend(
+    ALL_LOGOS[lang_id].extend(
         [
-            IdParadigm.MULTI.get(),
-            IdParadigm.OOP.get(),
-            IdParadigm.PROCEDURAL.get(),
-            IdParadigm.IMPERATIVE.get(),
-            IdParadigm.FUNCTIONAL.get(),
-            IdParadigm.STRUCTURED.get(),
-            IdParadigm.REFLECTIVE.get(),
+            Logo(
+                entity_id=lang_id.value,
+                path="/langs/python/logos/python-logo-generic.svg",
+                description="Python Logotype",
+            ),
+            Logo(
+                entity_id=lang_id.value,
+                path="/langs/python/logos/python-logo-only.svg",
+                description="Python Logo",
+            ),
         ]
     )
 
 
 # releases = []
 # designer = "people/v/van-rossum-guido"
-# developer = "org/p/python-software-foundation"
-# typing = [
-#     "duck-typing",
-#     "dynamic-typing",
-#     "optional-typying",
-# ]
+# organization = "org/p/python-software-foundation"
 # implementations = [
 #     "cpython",
 #     "pypy",
@@ -47,15 +49,8 @@ def relate():
 #     "iron-python",
 #     "jython",
 # ]
-# operatingSystems = [
-#     "windows",
-#     "macos",
-#     "linux",
-#     "android",
-#     "bsd",
-# ]
-# licenses = "licenses/python/*.ent"
-# fileExt = "licenses/py/*.ent"
+# licenses = ... # from releases
+# fileExt ...
 # urls = ["https=//python.org"]
 # dialects = [
 #     "cython",
@@ -97,3 +92,4 @@ def relate():
 #     "ruby",
 #     "swift",
 # ]
+

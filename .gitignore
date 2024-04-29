@@ -1,6 +1,9 @@
 # pixi environments
 .pixi
 
+# local .go
+.go
+
 # The DB is recreated each time data/main.py is run.
 db
 

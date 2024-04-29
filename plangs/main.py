@@ -5,8 +5,7 @@ from glob import iglob
 
 import kuzu
 
-from plangs.entities.decorators import invoke_entity_creators, invoke_relationship_creators
-from plangs.entities import IdLang
+from plangs.entities import ALL_LOGOS, IdLang
 
 ROOT_DIR: str = os.path.abspath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
@@ -30,7 +29,9 @@ def load_all_entities():
     path = os.path.join(ROOT_DIR, "plangs/entities/**/*.py")
     for modpath in iglob(path):
         mod = modpath.split(ROOT_DIR)[-1].replace("/", ".").replace("\\", ".")[1:-3]
-        importlib.import_module(mod)
+        res = importlib.import_module(mod)
+        # Execute the create function in the module.
+        res.create()
 
 
 if __name__ == "__main__":
@@ -40,7 +41,6 @@ if __name__ == "__main__":
     #     conn.execute(schema.read())
 
     load_all_entities()
-    invoke_entity_creators()
-    invoke_relationship_creators()
 
     print(IdLang.PYTHON.get().model_dump_json(indent=2))
+    print(ALL_LOGOS)
