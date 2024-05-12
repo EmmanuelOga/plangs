@@ -1,9 +1,20 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 import duckdb
-from rich import inspect
 
 from plangs import ROOT_PATH
+
+
+@dataclass
+class SqlExecutionError(Exception):
+    message: str
+    path: Path
+    lineno: int
+    sql: str
+
+    def __str__(self):
+        return f"{self.message}\nin {self.path.absolute()}:{self.lineno}\n\n{self.sql}"
 
 
 def execute_sql(conn: duckdb.DuckDBPyConnection, sql_path: Path):
@@ -26,24 +37,17 @@ def execute_sql(conn: duckdb.DuckDBPyConnection, sql_path: Path):
         try:
             conn.execute(sql_part)
         except duckdb.Error as e:
-            raise Exception(
-                {
-                    "path": f"{sql_path.absolute()}:{line_numbers[i]}",
-                    "sql": sql_part,
-                    "error": e,
-                }
+            raise SqlExecutionError(
+                message=f"{e}", path=sql_path, lineno=line_numbers[i], sql=sql_part
             ) from e
 
 
 if __name__ == "__main__":
     print("Starting DuckDB ...")
 
-    try:
-        with duckdb.connect(":memory:") as conn:  # type: ignore
-            execute_sql(conn, ROOT_PATH / "db" / "sql" / "schema.sql")
-            execute_sql(conn, ROOT_PATH / "db" / "sql" / "data.sql")
+    with duckdb.connect(":memory:") as conn:  # type: ignore
+        execute_sql(conn, ROOT_PATH / "db" / "sql" / "schema.sql")
+        execute_sql(conn, ROOT_PATH / "db" / "sql" / "data.sql")
 
-            result = conn.sql("SELECT * FROM typings")  # type: ignore
-            result.show()
-    except Exception as e:
-        inspect(e)
+        result = conn.sql("SELECT * FROM typings")  # type: ignore
+        result.show()

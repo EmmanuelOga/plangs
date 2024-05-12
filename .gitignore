@@ -4,8 +4,8 @@
 # local .go
 .go
 
-# The DB is recreated each time data/main.py is run.
-db
+# The DB is recreated each time.
+data
 
 # Byte-compiled / optimized / DLL files.
 # See also: https://github.com/github/gitignore/blob/main/Python.gitignore
