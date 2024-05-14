@@ -58,6 +58,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/regex-2024.4.28-py312h4a164c9_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/rich-13.7.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.16.0-pyh6c4a22f_0.tar.bz2
+      - conda: https://conda.anaconda.org/conda-forge/noarch/sourcetypes-0.0.4-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/sqlfluff-3.0.5-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/stack_data-0.6.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tblib-3.0.0-pyhd8ed1ab_0.conda
@@ -1038,6 +1039,24 @@ packages:
   - pkg:pypi/six
   size: 14259
   timestamp: 1620240338595
+- kind: conda
+  name: sourcetypes
+  version: 0.0.4
+  build: pyhd8ed1ab_0
+  subdir: noarch
+  noarch: python
+  url: https://conda.anaconda.org/conda-forge/noarch/sourcetypes-0.0.4-pyhd8ed1ab_0.tar.bz2
+  sha256: 4e324231d6a5068a01cbe626cc419a6fdf83b35be640ec048a334de19cd0d27d
+  md5: f538fdba496734d0684f907e470a7797
+  depends:
+  - python >=3.7
+  - typing-extensions >=3.7.4
+  license: MIT
+  license_family: MIT
+  purls:
+  - pkg:pypi/sourcetypes
+  size: 7733
+  timestamp: 1656097069
 - kind: conda
   name: sqlfluff
   version: 3.0.5

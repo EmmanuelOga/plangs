@@ -1,21 +1,19 @@
-import importlib
-from glob import iglob
+import duckdb
 
 from plangs import ROOT_PATH
-
-def load_all_entities():
-    """
-    Import every module under the entities directory.
-    This should populate all the functions that define entities and relationships.
-    """
-    path = ROOT_PATH / "plangs/entities/**/*.py"
-    prefix = ROOT_PATH.as_posix()
-    for modpath in iglob(path.as_posix()):
-        mod = modpath.split(prefix)[-1].replace("/", ".").replace("\\", ".")[1:-3]
-        importlib.import_module(mod)
-
+from plangs.duckdb import execute_sql
+from plangs.phases import execute_phase, load_all_entities
 
 if __name__ == "__main__":
     load_all_entities()
 
-    print("READY.")
+    print("Starting DuckDB ...")
+
+    with duckdb.connect(":memory:") as conn:  # type: ignore
+        execute_sql(conn, ROOT_PATH / "db" / "sql" / "schema.sql")
+
+        execute_phase(0, conn)
+        execute_phase(1, conn)
+
+        result = conn.sql("SELECT * FROM languages")  # type: ignore
+        result.show()

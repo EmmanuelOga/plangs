@@ -15,7 +15,7 @@
     "python.terminal.activateEnvironment": false, // Do not attempt to run conda activate.
     // SQLFluff.
     // "sqlfluff.config": "${workspaceFolder}/.sqlfluff",
-    "sqlfluff.dialect": "sqlite",
+    "sqlfluff.dialect": "duckdb",
     "sqlfluff.executablePath": "${workspaceFolder}/.pixi/envs/default/bin/sqlfluff",
     "sqlfluff.format.enabled": true,
 }

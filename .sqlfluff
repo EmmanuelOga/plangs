@@ -1,4 +1,5 @@
 [sqlfluff]
+dialect = duckdb
 templater = placeholder
 
 [sqlfluff:templater:placeholder]

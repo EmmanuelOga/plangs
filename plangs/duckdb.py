@@ -3,8 +3,6 @@ from pathlib import Path
 
 import duckdb
 
-from plangs import ROOT_PATH
-
 
 @dataclass
 class SqlExecutionError(Exception):
@@ -40,14 +38,3 @@ def execute_sql(conn: duckdb.DuckDBPyConnection, sql_path: Path):
             raise SqlExecutionError(
                 message=f"{e}", path=sql_path, lineno=line_numbers[i], sql=sql_part
             ) from e
-
-
-if __name__ == "__main__":
-    print("Starting DuckDB ...")
-
-    with duckdb.connect(":memory:") as conn:  # type: ignore
-        execute_sql(conn, ROOT_PATH / "db" / "sql" / "schema.sql")
-        execute_sql(conn, ROOT_PATH / "db" / "sql" / "data.sql")
-
-        result = conn.sql("SELECT * FROM typings")  # type: ignore
-        result.show()
