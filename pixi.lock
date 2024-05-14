@@ -16,6 +16,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/decorator-5.1.1-pyhd8ed1ab_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/diff-cover-9.0.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/duckdb-cli-0.10.2-hebf3989_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.2.0-pyhd8ed1ab_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/executing-2.0.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/go-1.22.2-h793346b_1.conda
@@ -26,6 +27,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/jedi-0.19.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/jinja2-3.1.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libcxx-16.0.6-h4653b0c_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libduckdb-0.10.2-hebf3989_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libexpat-2.6.2-hebf3989_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libffi-3.4.2-h3422bc3_5.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libgfortran-5.0.0-13_2_0_hd922786_3.conda
@@ -262,6 +264,21 @@ packages:
   size: 45626
   timestamp: 1713148364630
 - kind: conda
+  name: duckdb-cli
+  version: 0.10.2
+  build: hebf3989_0
+  subdir: osx-arm64
+  url: https://conda.anaconda.org/conda-forge/osx-arm64/duckdb-cli-0.10.2-hebf3989_0.conda
+  sha256: cecf35867d9eca800bb476e490bec3a1206734a103a52e16c0bcc06e0b7acfdf
+  md5: bded5321a4202f2c82ab5095d44286bf
+  depends:
+  - libcxx >=16
+  - libduckdb 0.10.2 hebf3989_0
+  license: MIT
+  license_family: MIT
+  size: 219811
+  timestamp: 1713379068067
+- kind: conda
   name: exceptiongroup
   version: 1.2.0
   build: pyhd8ed1ab_2
@@ -450,6 +467,20 @@ packages:
   license_family: Apache
   size: 1160232
   timestamp: 1686896993785
+- kind: conda
+  name: libduckdb
+  version: 0.10.2
+  build: hebf3989_0
+  subdir: osx-arm64
+  url: https://conda.anaconda.org/conda-forge/osx-arm64/libduckdb-0.10.2-hebf3989_0.conda
+  sha256: 24d58882d662260438e2113072ed7990d62ca9ddf1aa09c11c5060c7506293da
+  md5: c5e66bad48cf539915f7d2fe51852e6a
+  depends:
+  - libcxx >=16
+  license: MIT
+  license_family: MIT
+  size: 6157086
+  timestamp: 1713378888694
 - kind: conda
   name: libexpat
   version: 2.6.2

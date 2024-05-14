@@ -17,6 +17,7 @@ sqlfluff = ">=3.0.5,<3.1"
 python-duckdb = ">=0.10.2,<0.11"
 rich = ">=13.7.1,<13.8"
 sourcetypes = ">=0.0.4,<0.1"
+duckdb-cli = ">=0.10.2,<0.11"
 
 [pypi-dependencies]
 kuzu = "*"

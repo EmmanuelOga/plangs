@@ -1,7 +1,7 @@
 import duckdb
 
 from plangs import ROOT_PATH
-from plangs.duckdb import execute_sql
+from plangs.duckdb import load_statements
 from plangs.phases import execute_phase, load_all_entities
 
 if __name__ == "__main__":
@@ -10,7 +10,8 @@ if __name__ == "__main__":
     print("Starting DuckDB ...")
 
     with duckdb.connect(":memory:") as conn:  # type: ignore
-        execute_sql(conn, ROOT_PATH / "db" / "sql" / "schema.sql")
+        for stmt in load_statements(ROOT_PATH / "db" / "sql" / "schema.sql"):
+            stmt.exec(conn)
 
         execute_phase(0, conn)
         execute_phase(1, conn)

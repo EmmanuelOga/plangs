@@ -1,40 +1,81 @@
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
 import duckdb
 
+STATEMENT_NAME_RE = re.compile(r"^--\s*(\w+)\s*$")
+
 
 @dataclass
-class SqlExecutionError(Exception):
-    message: str
+class SqlSourceStatement:
+    """
+    Holds a piece of SQL extracted from a file,
+    with pointers to the the file and line number.
+    """
+
     path: Path
     lineno: int
     sql: str
 
+    def find_name(self) -> str | None:
+        """
+        Find a comment in the SQL that names the statement, if any.
+        """
+        for line in self.sql.splitlines():
+            if match := re.match(STATEMENT_NAME_RE, line):
+                if match.group(1):
+                    return match.group(1)
+
+    def exec(self, conn: duckdb.DuckDBPyConnection):
+        """
+        Excute a statement on a connection, or raise an error with the statement's info.
+        """
+        try:
+            conn.execute(self.sql)
+        except duckdb.Error as e:
+            raise duckdb.Error(self) from e
+
     def __str__(self):
-        return f"{self.message}\nin {self.path.absolute()}:{self.lineno}\n\n{self.sql}"
+        return "from {self.path.absolute()}:{self.lineno}\n\n{self.sql}"
 
 
-def execute_sql(conn: duckdb.DuckDBPyConnection, sql_path: Path):
+def load_statements(path: Path) -> list[SqlSourceStatement]:
     """
-    Reads the sql from the file and executes it on the connection,
-    statement by statement (separated by ';') for error reporting.
+    Load SQL statements from a sql file.
+    Statements should be separated by a semicolon.
     """
-    with open(sql_path, "r") as file:
-        sql_content = file.read()
+    statements: list[SqlSourceStatement] = []
 
-    # Keep track of line numbers for error reporting.
-    # TODO: maybe refactor to read the file line by line instead of loading it all at once.
-    sql_parts = sql_content.split(";")
-    line_numbers = [1]  # Start with line number 1
+    sql_parts = path.read_text().split(";")
+
+    # Find the first line numbers for each part.
+    line_numbers = [1]
     for i in range(1, len(sql_parts)):
         line_numbers.append(line_numbers[i - 1] + sql_parts[i - 1].count("\n") + 1)
 
-    # Run SQL statement by statement, but bail out on the first error.
-    for i, sql_part in enumerate(sql_parts):
-        try:
-            conn.execute(sql_part)
-        except duckdb.Error as e:
-            raise SqlExecutionError(
-                message=f"{e}", path=sql_path, lineno=line_numbers[i], sql=sql_part
-            ) from e
+    for i, sql in enumerate(sql_parts):
+        statements.append(SqlSourceStatement(path, line_numbers[i], sql))
+
+    return statements
+
+
+def load_named_statements(path: Path) -> dict[str, SqlSourceStatement]:
+    """
+    Converts the list of statements loaded from the path into a dictionary.
+    Each statement will be indexed only if prefixed by a comment with the name for it.
+
+    Example file contents:
+
+        -- stmt1
+        SELECT * FROM table1;
+
+        -- stmt2
+        SELECT * FROM table2;
+
+    """
+    result: dict[str, SqlSourceStatement] = {}
+    for stmt in load_statements(path):
+        if name := stmt.find_name():
+            result[name] = stmt
+    return result
