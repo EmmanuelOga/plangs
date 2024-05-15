@@ -1,10 +1,11 @@
 import re
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import duckdb
 
-STATEMENT_NAME_RE = re.compile(r"^--\s*(\w+)\s*$")
+STATEMENT_NAME_RE = re.compile(r"^--\s*([A-Za-z0-9_-]+)\s*$")
 
 
 @dataclass
@@ -27,12 +28,12 @@ class SqlSourceStatement:
                 if match.group(1):
                     return match.group(1)
 
-    def exec(self, conn: duckdb.DuckDBPyConnection):
+    def exec(self, conn: duckdb.DuckDBPyConnection, *args : Any, **kwargs : Any):
         """
         Excute a statement on a connection, or raise an error with the statement's info.
         """
         try:
-            conn.execute(self.sql)
+            conn.execute(self.sql, *args, **kwargs)
         except duckdb.Error as e:
             raise duckdb.Error(self) from e
 
@@ -79,3 +80,14 @@ def load_named_statements(path: Path) -> dict[str, SqlSourceStatement]:
         if name := stmt.find_name():
             result[name] = stmt
     return result
+
+def paired_sql(path: str) -> dict[str, SqlSourceStatement]:
+    """
+    Shortcut intended to load statements from a file
+    with the same name as __file__, but with .sql extension.
+
+    Example usage:
+
+    SQL = paired_sql(__file__) # If called on file.py, it will load file.sql
+    """
+    return load_named_statements(Path(path).with_suffix(".sql"))

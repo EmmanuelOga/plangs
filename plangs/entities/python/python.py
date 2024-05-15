@@ -1,8 +1,11 @@
 import duckdb
-from plangs.phases import phase
 from sourcetypes import sql  # type: ignore
 
+from plangs.duckdb import paired_sql
+from plangs.phases import phase
+
 KEY = "lang-python"
+SQL = paired_sql(__file__)
 
 
 @phase(0)
@@ -13,33 +16,29 @@ def create(conn: duckdb.DuckDBPyConnection):
         + " with the use of significant indentation."
     )
 
-    stmt: sql = """
-        insert into languages (key, version, name, description)
-        values
-        ($1, '2', 'Python 2', $2),
-        ($1, '3', 'Python 3', $2),
-    """
-    conn.execute(stmt, [KEY, desc])
+    insl = SQL["insert-lang"]
+    insl.exec(conn, {"key": KEY, "version": "2", "name": "Python 2", "desc": desc})
+    insl.exec(conn, {"key": KEY, "version": "3", "name": "Python 3", "desc": desc})
 
-    stmt: sql = """
-        insert into languages (key, version, name, description)
-        values
-        ('lang-cython', '3', 'Cython 3',
-            'Cython is a superset of the programming language Python, ' ||
-            'which allows developers to write Python code ' ||
-            '(with optional, C-inspired syntax extensions) ' ||
-            'that yields performance comparable to that of C.'),
-        ('lang-rpython', '0', 'RPython', ''),
-        ('lang-starlark', '0', 'Starlark', '');
-    """
-    conn.execute(stmt)
+    desc = (
+        "Cython is a superset of the programming language Python, "
+        + "which allows developers to write Python code "
+        + "(with optional, C-inspired syntax extensions) "
+        + "that yields performance comparable to that of C."
+    )
+    insl.exec(
+        conn, {"key": "lang-cython", "version": "3", "name": "Cython", "desc": desc}
+    )
 
-    stmt: sql = """
-    insert into people (key, full_name)
-    values
-    ('people-guido', 'Guido van Rossum');
-    """
-    conn.execute(stmt)
+    insl.exec(
+        conn, {"key": "lang-rpython", "version": "0", "name": "RPython", "desc": ""}
+    )
+    insl.exec(
+        conn, {"key": "lang-starlark", "version": "0", "name": "Starlark", "desc": ""}
+    )
+
+    insp = SQL["insert-people"]
+    insp.exec(conn, {"key": "people-guido", "full_name": "Guido van Rossum"})
 
 
 @phase(1)

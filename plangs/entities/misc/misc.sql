@@ -7,7 +7,7 @@ values
 ('para-struct', 'Structured'),
 ('para-refl', 'Reflective');
 
--- type_systems
+-- type-systems
 insert into type_systems (key)
 values
 ('types-duck'),
